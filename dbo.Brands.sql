@@ -1,11 +1,6 @@
 ﻿CREATE TABLE [dbo].[Brands] (
-    [BrandId]   INT           NOT NULL,
-    [BrandName] NVARCHAR (20) NOT NULL,
-    CONSTRAINT [PK_BrandId] PRIMARY KEY CLUSTERED ([BrandId] ASC)
+    [BrandId]   INT            IDENTITY (1, 1) NOT NULL,
+    [BrandName] NVARCHAR (MAX) NOT NULL,
+    PRIMARY KEY CLUSTERED ([BrandId] ASC)
 );
-
-
-GO
-CREATE NONCLUSTERED INDEX [BrandId]
-    ON [dbo].[Brands]([BrandId] ASC);
 

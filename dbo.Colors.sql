@@ -1,11 +1,6 @@
 ﻿CREATE TABLE [dbo].[Colors] (
-    [ColorId]   INT           NOT NULL,
-    [ColorName] NVARCHAR (20) NOT NULL,
-    CONSTRAINT [PK_ColorId] PRIMARY KEY CLUSTERED ([ColorId] ASC)
+    [ColorId]   INT            IDENTITY (1, 1) NOT NULL,
+    [ColorName] NVARCHAR (MAX) NOT NULL,
+    PRIMARY KEY CLUSTERED ([ColorId] ASC)
 );
-
-
-GO
-CREATE NONCLUSTERED INDEX [ColorId]
-    ON [dbo].[Colors]([ColorId] ASC);
 
