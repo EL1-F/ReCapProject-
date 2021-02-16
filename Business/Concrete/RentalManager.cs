@@ -22,7 +22,7 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            if (rental.ReturnDate ==null)
+            if (rental.ReturnDate ==null && _rentDal.GetRentDetail(I => I.CarId == rental.CarId).Count > 0)
             {
                 return new ErrorResult(Messages.NotReturned);
             }
@@ -38,10 +38,6 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetAll()
         {
-            if (DateTime.Now.Hour == 4)
-            {
-                return new ErrorDataResult<List<Rental>>(Messages.MaintenanceTime);
-            }
             return new SuccessDataResult<List<Rental>>(_rentDal.GetAll(), Messages.Listed);
         }
 

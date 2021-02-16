@@ -17,7 +17,7 @@ namespace ConsoleUI
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
             CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
 
-           // var result = rentalManager.Add(new Rental { CarId=1,CustomerId=3});
+           //var result = rentalManager.Add(new Rental { CarId=1,CustomerId=3});
             
 
 
