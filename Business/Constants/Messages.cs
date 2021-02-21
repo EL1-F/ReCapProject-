@@ -16,5 +16,6 @@ namespace Business.Constants
         public static string BrandNameInvalid = "En az iki karakter olmalıdır.";
         public static string Returned="Araç teslim edildi.";
         public static string NotReturned = "Araç henüz teslim ediledi.";
+        public static string PasswordInvalid = "Geçersiz parola.";
     }
 }

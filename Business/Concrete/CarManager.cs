@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccsess.Abstract;
 using Entities.Concrete;
@@ -9,7 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Business.Concrete
-{
+{ //Validation kullanımı ortak olduğu için core katmanında yapıyoruz
     public class CarManager:ICarService
     {
         ICarDal _CarDal; //bir iş sınıfı başka bir sınıfı new'lemez injection yapıyoruz
@@ -19,17 +22,13 @@ namespace Business.Concrete
             _CarDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))] //add metodunu doğrula carCalidator kullanarak
         public IResult Add(Car car)
-        {
-            if (car.DailyPrice >0)
-            {
+        { //validation >> objeye işlem yapmak için iş kodlarının yapısal olarak uygunluğunu kontrol ediyoruz
+
                 _CarDal.Add(car);
                 return new SuccessResult(Messages.Added);
-            }
-            else
-            {
-                return new ErrorResult(Messages.DailyPriceInvalid);
-            }         
+                  
         }
 
         public IResult Delete(Car car)
