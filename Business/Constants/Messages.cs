@@ -17,5 +17,7 @@ namespace Business.Constants
         public static string Returned="Araç teslim edildi.";
         public static string NotReturned = "Araç henüz teslim ediledi.";
         public static string PasswordInvalid = "Geçersiz parola.";
+        public static string ImagesAdded="Görüntü başarıyla eklendi.";
+        public static string ImageUploadLimitOver="Görüntü yükleme sınırı aşıldı";
     }
 }
