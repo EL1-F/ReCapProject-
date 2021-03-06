@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -22,6 +23,8 @@ namespace Business.Concrete
             _CarDal = carDal;
         }
 
+
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarValidator))] //add metodunu doğrula carCalidator kullanarak
         public IResult Add(Car car)
         { //validation >> objeye işlem yapmak için iş kodlarının yapısal olarak uygunluğunu kontrol ediyoruz
@@ -31,12 +34,15 @@ namespace Business.Concrete
                   
         }
 
+
+        [SecuredOperation("admin")]
         public IResult Delete(Car car)
         {
             _CarDal.Delete(car);
             return new SuccessResult(Messages.Deleted);
         }
 
+        [SecuredOperation("Car.List,admin")]
         public IDataResult<List<Car>> GetAll()
         {
             if (DateTime.Now.Hour == 05)

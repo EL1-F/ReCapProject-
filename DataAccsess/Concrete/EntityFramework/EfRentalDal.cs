@@ -20,7 +20,7 @@ namespace DataAccsess.Concrete.EntityFramework
                              join cs in context.Customers
                              on r.CustomerId equals cs.CustomerId
                              join u in context.Users
-                             on cs.UserId equals u.UserId  
+                             on cs.UserId equals u.Id  
                              select new RentDetailDto
                              {
                                  RentalId = r.RentalId,

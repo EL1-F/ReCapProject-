@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Entities.Concrete;
+using Entities.DTOs;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,21 @@ namespace Business.ValidationRules.FluentValidation
     {
         public UserValidator()
         {
-            RuleFor(u => u.LastName).NotNull().DependentRules(() => {
-                RuleFor(u => u.FirstName).NotNull();
+            RuleFor(u => u.LastName).NotEmpty().DependentRules(() =>
+            {
+                RuleFor(u => u.FirstName).NotEmpty();
             });
 
             RuleFor(u => u.FirstName).MinimumLength(3);
             RuleFor(u => u.LastName).MinimumLength(2);
-            RuleFor(u => u.Password).Must(UserPasswordRule).WithMessage("Şifre dört Rakamdan oluşmalı.");
-
+            RuleFor(p => p.Email).Must(MailCheck).When(p => p.Email != null).WithMessage("IsValid Mail");
+            RuleFor(p => p.Email).NotEmpty();
         }
 
-        private bool UserPasswordRule(int arg)
+        private bool MailCheck(string arg)
         {
-            const int length = 4;
-            string password = arg.ToString();
-
-            if (password == null && password.Length!=length )
-            {
-                throw new ArgumentNullException();
-            }
-
-            bool IsValid = password.Length == length;
-
-            return IsValid;
+            return arg.Contains("@");
         }
+
     }
 }
