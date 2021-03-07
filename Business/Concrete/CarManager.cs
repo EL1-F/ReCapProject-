@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -24,8 +26,10 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin")]
+
+        [SecuredOperation("admin")] //yetkilendirme>> bu işlemi admin yapabilir
         [ValidationAspect(typeof(CarValidator))] //add metodunu doğrula carCalidator kullanarak
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         { //validation >> objeye işlem yapmak için iş kodlarının yapısal olarak uygunluğunu kontrol ediyoruz
 
@@ -42,7 +46,9 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Deleted);
         }
 
-        [SecuredOperation("Car.List,admin")]
+        [PerformanceAspect(5)]
+        [CacheAspect]
+        //[SecuredOperation("Car.List,admin")]
         public IDataResult<List<Car>> GetAll()
         {
             if (DateTime.Now.Hour == 05)
@@ -67,6 +73,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_CarDal.GetAll(c => c.DailyPrice >= min && c.DailyPrice <= max));
         }
 
+
+        [CacheAspect]
         public IDataResult<Car> GetById(int carId)
         {
             return new SuccessDataResult<Car>(_CarDal.Get(c => c.CarId == carId));
@@ -77,6 +85,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_CarDal.GetCarDetail());
         }
 
+
+        //[CacheRemoveAspect("Get")] //içinde Get olan tüm key leri iptal et
+        [CacheRemoveAspect("ICarService.Get")] //verilen service içindeki getleri kaldır
         public IResult Update(Car car)
         {
             _CarDal.Update(car);

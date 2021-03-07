@@ -20,6 +20,8 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Core.Utilities.Security.Encyption;
 using Core.Utilities.IoC;
+using Core.Extensions;
+using Core.DependencyResolvers;
 
 namespace WebAPI
 {
@@ -72,9 +74,10 @@ namespace WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            ServiceTool.Create(services);
+            //bunu kullanmak için IServiceCollection ý extent edeceðiz yani içine AddDependencyResolvers yazarak geniþleteceðiz
+            services.AddDependencyResolvers(new ICoreModule[] {
+                new CoreModule()
+            }); //farklý modüller oluþturursak buraya onu da ekleyebiliriz
 
         }
 

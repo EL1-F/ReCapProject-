@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -27,6 +28,7 @@ namespace Business.Concrete
         }
 
 
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Add(IFormFile file, CarImage carImage)
         {
             IResult result = BusinessRules.Run(CheckUploadedImagesLimit(carImage.CarId));
@@ -53,13 +55,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_imageDal.GetAll());
         }
 
+        [CacheAspect(duration: 10)]
         public IDataResult<List<CarImage>> GetByCarId(int carId)
         {
             return new SuccessDataResult<List<CarImage>>(_imageDal.GetAll(i => i.CarId == carId));
         }
 
-        
-       
+
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Update(IFormFile file,CarImage carImage)
         {
             var carImageUpdate = UpdatedFile(file,carImage);
@@ -69,7 +72,7 @@ namespace Business.Concrete
 
         public IDataResult<CarImage> Get(int id)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<CarImage>(_imageDal.Get(i => i.ImageId == id));
         }
 
 
