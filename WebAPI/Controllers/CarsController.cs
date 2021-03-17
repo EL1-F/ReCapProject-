@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbyid")]  //  /getbyid?id=1  yazılır >> id si 1 olanı getir
         public IActionResult GetById(int id)
         {
-            var result = _carService.GetById(id);
+            var result = _carService.GetCarImageDetail(c => c.CarId == id);
 
             if (result.Success)
             {
@@ -82,7 +82,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbybrandid")] 
         public IActionResult GetByBrandId(int id)
         {
-            var result = _carService.GetAllByBrandId(id);
+            var result = _carService.GetCarDetail(c=>c.BrandId==id);
 
             if (result.Success)
             {
@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbycolorid")]  
         public IActionResult GetByColorId(int id)
         {
-            var result = _carService.GetAllByColorId(id);
+            var result = _carService.GetCarDetail(c=>c.ColorId==id);
 
             if (result.Success)
             {

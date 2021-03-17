@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
 
         
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
+        public IActionResult AddAsync([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
         //FromForm ile modele ve entities e bağlanıyoruz
         //IFormFile>>HttpRequest ile gönderilen dosyayı temsil eder.
 
@@ -45,9 +45,10 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("delete")]
-        public IActionResult Delete([FromForm(Name = ("ImageId"))] int id)
+        public IActionResult Delete([FromForm(Name = ("Id"))] int id)
         {
-            var result = _imageService.Delete(id);
+            var carImage = _imageService.Get(id).Data;
+            var result = _imageService.Delete(carImage);
             if (result.Success)
             {
                 return Ok(result);
@@ -56,10 +57,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm(Name = ("ImageId"))] int id)
+        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
         {
-            var carImage = _imageService.Get(id).Data;
-            var result = _imageService.Update(file,carImage);
+            var result = _imageService.Update(file, carImage);
+
             if (result.Success)
             {
                 return Ok(result);
@@ -82,10 +83,21 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("getbycarid")]
-        public IActionResult GetByCarId([FromForm(Name = ("CarId"))] int carId)
+        public IActionResult GetByCarId(int carId)
         {
             var result = _imageService.GetByCarId(carId);
 
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getimagesbycaridform")]
+        public IActionResult GetImagesByCarId([FromForm(Name = ("CarId"))] int CarId)
+        {
+            var result = _imageService.GetImagesByCarId(CarId);
             if (result.Success)
             {
                 return Ok(result);

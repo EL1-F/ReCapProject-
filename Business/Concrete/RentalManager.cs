@@ -52,7 +52,7 @@ namespace Business.Concrete
 
         public IDataResult<List<RentDetailDto>> GetRentalDetails(Expression<Func<Rental, bool>> filter = null)
         {
-            return new SuccessDataResult<List<RentDetailDto>>(_rentDal.GetRentDetail(filter), Messages.Returned);
+            return new SuccessDataResult<List<RentDetailDto>>(_rentDal.GetRentDetail(filter));
         }
 
         public IResult Update(Rental rental)

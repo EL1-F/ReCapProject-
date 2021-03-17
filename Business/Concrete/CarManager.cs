@@ -12,6 +12,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -80,9 +81,14 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(_CarDal.Get(c => c.CarId == carId));
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetail()
+        public IDataResult<List<CarDetailDto>> GetCarDetail(Expression<Func<Car, bool>> filter = null)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_CarDal.GetCarDetail());
+            return new SuccessDataResult<List<CarDetailDto>>(_CarDal.GetCarDetail(filter));
+        }
+
+        public IDataResult<List<CarImageDetailDto>> GetCarImageDetail(Expression<Func<Car, bool>> filter = null)
+        {
+            return new SuccessDataResult<List<CarImageDetailDto>>(_CarDal.GetCarImageDetail(filter));
         }
 
 
